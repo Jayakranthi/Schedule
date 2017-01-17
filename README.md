@@ -1,4 +1,4 @@
-# Schedule
+# Schedule Trip
 
 Getting Started: 
 To get you started you can simply clone the TripPlanner repository and install the dependencies:
