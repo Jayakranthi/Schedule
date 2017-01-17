@@ -1,0 +1,116 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Filter</h3> </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="title">Search</label>
+                        <input type="text" class="form-control" required name="title" placeholder="keyword..." ng-model="main.search.$text"> </div>
+                    <div class="form-group">
+                        <label for="title">Category</label>
+                        <select id="" class="form-control" name="category" ng-model="main.search.$category">
+                            <option value="">select</option>
+                            <option value="None">None</option>
+                            <option value="Business">Business</option>
+                            <option value="Vacation">Vacation</option>
+                        </select>
+                    </div>
+                    <div class="panel-footer text-center">
+                        <button class="btn btn-success" ng-click="main.searchTrip()" ng-disabled="!main.search.$text && !main.search.$category"><i class="fa fa-search"></i> Search</button>
+                        <button class="btn btn-default" ng-click="main.clearSearch()"><i class="fa fa-times"></i> Clear Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Trip Record</h3> </div>
+                <div class="panel-body">
+                    <table class="table table-stripped">
+                        <thead>
+                            <tr>
+                                <th ng-click="main.sortByColumn('title')"> Title <i class="fa" ng-if="main.sort.column==='title'" ng-class="{'fa-caret-up':!main.sort.order, 'fa-caret-down':main.sort.order}"></i></th>
+                                <th ng-click="main.sortByColumn('destination')"> Destination <i class="fa" ng-if="main.sort.column==='destination'" ng-class="{'fa-caret-up':!main.sort.order, 'fa-caret-down':main.sort.order}"></i></th>
+                                </th>
+                                <th>Duration (days)</th>
+                                <th ng-click="main.sortByColumn('category')"> Category <i class="fa" ng-if="main.sort.column==='category'" ng-class="{'fa-caret-up':!main.sort.order, 'fa-caret-down':main.sort.order}"></i></th>
+                                </th>
+                                <th>Reminder</th>
+                                <th>Todo Items</th>
+                                <th>State</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="trip in main.TripRecord | filter:main.search.text | filter:{category:main.search.category} | orderBy:main.sort.column:main.sort.order">
+                                <td>{{trip.title}}</td>
+                                <td>{{trip.destination}}</td>
+                                <td>{{main.getTripDuration(trip)}}</td>
+                                <td>{{trip.category}}</td>
+                                <td><i ng-if="trip.reminder" class="fa fa-bell"></i></td>
+                                <td>{{main.getTodoReport(trip)}}</td>
+                                <td>{{main.getTripState(trip)}}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" ng-click="main.edit(trip)"><i class="fa fa-pencil"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--                    <pre>{{main | json}}</pre> --></div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{main.form.id?'Edit':'Add'}} Trip</h3> </div>
+                <div class="panel-body">
+                    <form novalidate name="TripPlannerForm">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" required name="title" placeholder="Title" ng-model="main.form.title"> </div>
+                        <div class="form-group">
+                            <label for="title">Destination</label>
+                            <input type="text" class="form-control" required name="destination" placeholder="Destination" ng-model="main.form.destination"> </div>
+                        <div>
+                            <weather-widget location="main.form.destination"></weather-widget>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Category</label>
+                            <select id="" class="form-control" name="category" ng-model="main.form.category">
+                                <option value="None">None</option>
+                                <option value="Business">Business</option>
+                                <option value="Vacation">Vacation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Start Date</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" required name="startDate" uib-datepicker-popup ng-model="main.form.startDate" is-open="main.sDateOpened" datepicker-options="main.dateOptions" close-text="Close" /> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="main.sDateOpened = !main.sDateOpened"><i class="fa fa-calendar"></i></button>
+                            </span> </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">End Date</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" required name="endDate" uib-datepicker-popup ng-model="main.form.endDate" is-open="main.eDateOpened" datepicker-options="{minDate: main.form.startDate}" close-text="Close" /> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="main.eDateOpened = !main.eDateOpened"><i class="fa fa-calendar"></i></button>
+                            </span> </div>
+                        </div>
+                        <hr>
+                        <todo ng-model="main.form.todo"></todo>
+                        <hr>
+                        <div class="text-center"> <a class="btn btn-xs btn-default" title="click to set or edit reminder" ng-click="main.setReminder()"><i class="fa fa-circle text-success" ng-if="main.form.reminder"></i> Set Reminder</a> </div>
+                    </form>
+                </div>
+                <div class="panel-footer text-center">
+                    <button class="btn btn-success" ng-click="main.save()" ng-disabled="TripPlannerForm.$invalid"><i class="fa fa-save"></i> {{main.form.id?'Save':'Add'}}</button>
+                    <button class="btn btn-default" ng-click="main.newTrip()"><i class="fa fa-times"></i> Cancel</button>
+                    <button class="btn btn-danger" ng-click="main.delete()" ng-disabled="!main.form.id"><i class="fa fa-trash"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

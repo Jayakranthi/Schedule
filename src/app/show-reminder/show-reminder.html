@@ -1,0 +1,23 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title"><i class="fa fa-lg fa-bell text-muted"></i> Reminder</h3> </div>
+    <div class="modal-body" id="modal-body">
+       <div class="row">
+           {{rm.trip}}
+       </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="form-group">
+                    <label for="title">Date</label>
+                    <select class="form-control" ng-model="rm.form.snooze" ng-options="t for t in rm.times"></select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="rm.open()">Open</button>
+        <button class="btn btn-primary" type="button" ng-click="rm.snooze()">Snooze</button>
+        <button class="btn btn-default" type="button" ng-click="rm.dismiss()">Dismiss</button>
+    </div>
+</div>

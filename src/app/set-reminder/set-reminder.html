@@ -1,0 +1,26 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title"><i class="fa fa-lg fa-bell text-muted"></i> Set Reminder</h3> </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="title">Date</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" required name="date" uib-datepicker-popup ng-model="rm.form.reminder.date" is-open="rm.dateOpened" datepicker-options="rm.dateOptions" close-text="Close" /> <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="rm.dateOpened = !rm.dateOpened"><i class="fa fa-calendar"></i></button>
+                                    </span> </div>
+                </div>
+            </div>
+              <div class="col-xs-12">
+                 <label for="title">Time</label>
+                  <div uib-timepicker ng-model="rm.form.reminder.time" ng-change="changed()" hour-step="1" minute-step="10" show-meridian="true"></div>
+              </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="!rm.form.reminder.time || !rm.form.reminder.date" ng-click="rm.save()">Set</button>
+        <button class="btn btn-warning" type="button" ng-click="rm.close()">Cancel</button>
+    </div>
+</div>
